@@ -31,3 +31,5 @@ before_install:
 
 script: 
     mkdir build && cd build && cmake .. ${CMAKE_OPTIONS} && make
+
+install: true
