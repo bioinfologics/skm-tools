@@ -4,7 +4,7 @@ This repository contains a number of tools that work with skip-mers.
 
 # The concept of skip-mer
 
-Skip-mers are sequences of nucleotides taken in cycles of m every n for a total of k. The full description is on a manuscript submitted to biorxiv (link coming soon, you can search for it).
+Skip-mers are sequences of nucleotides taken in cycles of m every n for a total of k. The full description is in the biorXiv manuscript: [Skip-mers: increasing entropy and sensitivity to detect conserved genic regions with simple cyclic q-grams](http://www.biorxiv.org/content/early/2017/08/23/179960)
 
 It is actually a lot easier to show with a picture:
 
