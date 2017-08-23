@@ -1,0 +1,6 @@
+[submodule "src/deps/cxxopts"]
+	path = src/deps/cxxopts
+	url = https://github.com/jarro2783/cxxopts.git
+[submodule "src/deps/zstr"]
+	path = src/deps/zstr
+	url = https://github.com/mateidavid/zstr.git
