@@ -62,9 +62,6 @@ public:
 private:
 
     uint64_t alloc_block;
-
-
-    uint64_t count=0;
 };
 
 

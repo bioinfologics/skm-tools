@@ -33,7 +33,6 @@ public:
     uint8_t m,n,k;
     int S;
     std::vector<SkipMerEntry> skipmers;
-    uint64_t count=0;
     uint64_t alloc_block;
 };
 
