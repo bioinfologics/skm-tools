@@ -75,7 +75,6 @@ void SkipMerPosition::create_from_reference_file(std::string filename, bool fast
         close(fp);
     }
 
-    skipmer_positions.resize(count);
     shared_count.resize(refseqs.back().offset+refseqs.back().size);
     //std::cout<<"Counting finished with "<<skipmers.size()<<" skipmers"<<std::endl;
 };
@@ -97,7 +96,7 @@ void SkipMerPosition::add_from_string(const std::string & seq, uint64_t offset){
         rkmer[i]=0;
     }
 
-    if (skipmer_positions.size()<count+seq.size()) skipmer_positions.resize(skipmer_positions.size()+seq.size()+alloc_block);
+    if (skipmer_positions.capacity()<skipmer_positions.size()+seq.size()) skipmer_positions.reserve(skipmer_positions.size()+(seq.size()>alloc_block? seq.size():alloc_block));
 
 
     for (int64_t p=0;p<seq.size();p++) {
@@ -147,14 +146,10 @@ void SkipMerPosition::add_from_string(const std::string & seq, uint64_t offset){
             }
             if (last_unknown[fi] + S <= p) {
                 if (fkmer[fi] <= rkmer[fi]) {
-                    skipmer_positions[count].skipmer = fkmer[fi];
-                    skipmer_positions[count].rev = false;
+                    skipmer_positions.emplace_back(SkipMerPositionEntry{fkmer[fi],false,offset + p});
                 } else {
-                    skipmer_positions[count].skipmer = rkmer[fi];
-                    skipmer_positions[count].rev = true;
+                    skipmer_positions.emplace_back(SkipMerPositionEntry{rkmer[fi],true,offset + p});
                 }
-                skipmer_positions[count].position = offset + p;
-                ++count;
             }
         }
     }

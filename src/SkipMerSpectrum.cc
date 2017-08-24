@@ -54,7 +54,7 @@ void SkipMerSpectrum::count_from_file(std::string filename, bool fasta_input){
         close(fp);
     }
 
-    skipmers.resize(count);
+    //skipmers.resize(count);
     //std::cout<<"Counting finished with "<<skipmers.size()<<" skipmers"<<std::endl;
 };
 
@@ -74,8 +74,7 @@ void SkipMerSpectrum::add_from_string(const std::string & seq){
         fkmer[i]=0;
         rkmer[i]=0;
     }
-
-    if (skipmers.size()<count+seq.size()) skipmers.resize(skipmers.size()+seq.size()+alloc_block);
+    if (skipmers.capacity()<skipmers.size()+seq.size()) skipmers.reserve(skipmers.size()+(seq.size()>alloc_block? seq.size():alloc_block));
 
     for (int64_t p=0;p<seq.size();p++) {
         //fkmer: grows from the right (LSB)
@@ -124,12 +123,10 @@ void SkipMerSpectrum::add_from_string(const std::string & seq){
             }
             if (last_unknown[fi] + S <= p ) {
                 if (fkmer[fi] <= rkmer[fi]) {
-                    skipmers[count].skipmer = fkmer[fi];
+                    skipmers.emplace_back(SkipMerEntry{fkmer[fi],1});
                 } else {
-                    skipmers[count].skipmer = rkmer[fi];
+                    skipmers.emplace_back(SkipMerEntry{rkmer[fi],1});
                 }
-                skipmers[count].count = 1;
-                ++count;
             }
         }
     }
