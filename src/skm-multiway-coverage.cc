@@ -7,7 +7,19 @@
 #include "SkipMerMultiWayCoverageAnalyser.h"
 
 
+void print_workdir(char *const *argv) {
+    char wdir[2048];
+    getcwd(wdir, sizeof(wdir));
+
+    std::cout << "Working directory: " << wdir << std::endl;
+    std::cout << "Executable: " << argv[0] << std::endl;
+}
+
+
 int main(int argc, char * argv[]) {
+
+    print_workdir(argv);
+
     std::vector<std::string> seq_filenames;
     std::string ref_filename;
     std::string output_prefix;
@@ -134,4 +146,3 @@ int main(int argc, char * argv[]) {
     return 0;
 
 }
-

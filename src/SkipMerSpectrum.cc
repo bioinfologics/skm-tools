@@ -54,8 +54,7 @@ void SkipMerSpectrum::count_from_file(std::string filename, bool fasta_input){
         close(fp);
     }
 
-    //skipmers.resize(count);
-    //std::cout<<"Counting finished with "<<skipmers.size()<<" skipmers"<<std::endl;
+    std::cout<<skipmers.size()<<" skipmers. ";
 };
 
 void SkipMerSpectrum::add_from_string(const std::string & seq){
@@ -144,6 +143,7 @@ void SkipMerSpectrum::sort_and_collapse(){
         else skipmers[++wi]=skipmers[ri];
     }
     skipmers.resize(wi+1);
+    std::cout << skipmers.size() << " unique. ";
 }
 
 void SkipMerSpectrum::sort_and_collapse(uint16_t min_freq,uint16_t max_freq){
