@@ -122,9 +122,9 @@ void SkipMerSpectrum::add_from_string(const std::string & seq){
             }
             if (last_unknown[fi] + S <= p ) {
                 if (fkmer[fi] <= rkmer[fi]) {
-                    skipmers.emplace_back(SkipMerEntry{fkmer[fi],1});
+                    skipmers.emplace_back(fkmer[fi],1);
                 } else {
-                    skipmers.emplace_back(SkipMerEntry{rkmer[fi],1});
+                    skipmers.emplace_back(rkmer[fi],1);
                 }
             }
         }

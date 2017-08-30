@@ -13,6 +13,8 @@
 
 class SkipMerPositionEntry{
 public:
+    SkipMerPositionEntry() = default;
+    SkipMerPositionEntry(SkipMer _sk, uint64_t _pos, bool _rev) : skipmer(_sk), position(_pos), rev(_rev) {}
     SkipMer skipmer;
     uint64_t position;
     bool rev;

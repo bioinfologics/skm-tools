@@ -13,6 +13,8 @@
 
 class SkipMerEntry{
 public:
+    SkipMerEntry() = default;
+    SkipMerEntry(SkipMer _sk, uint16_t _c) : skipmer(_sk), count(_c){}
     SkipMer skipmer;
     uint16_t count;
     bool operator<(const SkipMerEntry & rhs) const { return skipmer<rhs.skipmer;};

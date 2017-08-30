@@ -146,9 +146,9 @@ void SkipMerPosition::add_from_string(const std::string & seq, uint64_t offset){
             }
             if (last_unknown[fi] + S <= p) {
                 if (fkmer[fi] <= rkmer[fi]) {
-                    skipmer_positions.emplace_back(SkipMerPositionEntry{fkmer[fi],false,offset + p});
+                    skipmer_positions.emplace_back(fkmer[fi],offset + p,false);
                 } else {
-                    skipmer_positions.emplace_back(SkipMerPositionEntry{rkmer[fi],true,offset + p});
+                    skipmer_positions.emplace_back(rkmer[fi],offset + p,true);
                 }
             }
         }
