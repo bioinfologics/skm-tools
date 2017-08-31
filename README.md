@@ -2,6 +2,11 @@
 
 This repository contains a number of tools that work with skip-mers.
 
+The code contains an option to use 64-bit k-mer representation (which
+will support `k<=31` and is the default)
+or an option to use 128-bit k-mer representation (which will support `k<=63`
+and needs to be activated with the `WITH_LARGE_KMERS` variable at compilation time).
+
 # The concept of skip-mer
 
 Skip-mers are sequences of nucleotides taken in cycles of m every n for a total of k. The full description is in the biorXiv manuscript: [Skip-mers: increasing entropy and sensitivity to detect conserved genic regions with simple cyclic q-grams](http://www.biorxiv.org/content/early/2017/08/23/179960)
