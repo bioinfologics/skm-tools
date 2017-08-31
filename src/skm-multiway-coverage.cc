@@ -48,9 +48,9 @@ int main(int argc, char * argv[]) {
                 ("max_coverage", "max coverage (both on ref and sets - default 1)", cxxopts::value<uint8_t >(maxcoverage))
                 ("o,output", "output file prefix", cxxopts::value<std::string>(output_prefix));
         options.add_options("Skip-mer shape (m every n, total k)")
-                ("m,used_bases", "m", cxxopts::value<uint8_t>(m))
-                ("n,skipped_bases", "n", cxxopts::value<uint8_t>(n))
-                ("k,total_bases", "k", cxxopts::value<uint8_t>(k));
+                ("m", "m", cxxopts::value<uint8_t>(m))
+                ("n", "n", cxxopts::value<uint8_t>(n))
+                ("k", "k", cxxopts::value<uint8_t>(k));
 
         options.add_options("Performance")
                 ("alloc_block", "allocation block for the skip-mer sets", cxxopts::value<uint64_t>(alloc_block));

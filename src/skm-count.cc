@@ -28,9 +28,9 @@ int main(int argc, char * argv[]) {
                 ("f,min_freq","minimum skip-mer frequency", cxxopts::value<uint16_t>(min_freq))
                 ("F,max_freq","maximum skip-mer frequency", cxxopts::value<uint16_t>(max_freq));
         options.add_options("Skip-mer shape (m every n, total k)")
-                ("m,used_bases", "m", cxxopts::value<uint8_t>(m))
-                ("n,skipped_bases", "n", cxxopts::value<uint8_t>(n))
-                ("k,total_bases", "k", cxxopts::value<uint8_t>(k));
+                ("m", "m", cxxopts::value<uint8_t>(m))
+                ("n", "n", cxxopts::value<uint8_t>(n))
+                ("k", "k", cxxopts::value<uint8_t>(k));
         options.add_options("Performance")
                 ("alloc_block", "allocation block for the skip-mer sets", cxxopts::value<uint64_t>(alloc_block));
 
