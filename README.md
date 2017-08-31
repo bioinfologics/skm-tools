@@ -40,3 +40,8 @@ The tool loads a reference genome and a set of features from a gff3 file, alongs
 # Tools in development (use them at your own risk)
 
 More tools are comming soon, you can have a look in the alternative branches, but no warranty given.
+
+# skm-multiway-shared
+
+This creates an intersection between many sequence files (genomes?)
+and outputs for each file how many skip-mers are present in how many files.
