@@ -4,7 +4,13 @@
 
 #include <iostream>
 #include <fstream>
+
+#if defined(__clang__)
+#include <algorithm>
+#elif defined(__GNUC__) || !defined(__GNUG__)
 #include <parallel/algorithm>
+#endif
+
 #include <map>
 #include <fcntl.h>
 #include "SkipMerPosition.h"
@@ -156,7 +162,11 @@ void SkipMerPosition::add_from_string(const std::string & seq, uint64_t offset){
 };
 
 void SkipMerPosition::sort(){
+#if defined(__clang__)
+    std::sort(skipmer_positions.begin(),skipmer_positions.end());
+#elif defined(__GNUC__) || !defined(__GNUG__)
     __gnu_parallel::sort(skipmer_positions.begin(),skipmer_positions.end());
+#endif
 }
 
 void SkipMerPosition::mark_with_gff3_feature(std::string filename, std::string featurename, uint64_t min_feature_size){
