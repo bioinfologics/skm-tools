@@ -4,7 +4,13 @@
 
 #include <iostream>
 #include <fstream>
+
+#if defined(__clang__)
+#include <algorithm>
+#elif defined(__GNUC__) || !defined(__GNUG__)
 #include <parallel/algorithm>
+#endif
+
 #include <fcntl.h>
 
 #include "SkipMerSpectrum.h"
@@ -132,7 +138,11 @@ void SkipMerSpectrum::add_from_string(const std::string & seq){
 };
 
 void SkipMerSpectrum::sort_and_collapse(){
+#if defined(__clang__)
+    std::sort(skipmers.begin(),skipmers.end());
+#elif defined(__GNUC__) || !defined(__GNUG__)
     __gnu_parallel::sort(skipmers.begin(),skipmers.end());
+#endif
 
     size_t wi=0;
     for (size_t ri=1; ri<skipmers.size();++ri){
@@ -148,7 +158,13 @@ void SkipMerSpectrum::sort_and_collapse(){
 
 void SkipMerSpectrum::sort_and_collapse(uint16_t min_freq,uint16_t max_freq){
     uint64_t pass=0,fail=0;
+
+#if defined(__clang__)
+    std::sort(skipmers.begin(),skipmers.end());
+#elif defined(__GNUC__) || !defined(__GNUG__)
     __gnu_parallel::sort(skipmers.begin(),skipmers.end());
+#endif
+
     size_t wi=0;
     for (size_t ri=1; ri<skipmers.size();++ri){
         if (skipmers[ri].skipmer==skipmers[wi].skipmer) {

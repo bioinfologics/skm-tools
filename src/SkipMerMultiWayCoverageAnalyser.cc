@@ -4,13 +4,19 @@
 
 #include "SkipMerMultiWayCoverageAnalyser.h"
 #include <iostream>
+
+#if defined(__clang__)
+#include <algorithm>
+#elif defined(__GNUC__) || !defined(__GNUG__)
 #include <parallel/algorithm>
+#endif
+
 #include <fstream>
 #include "deps/zstr/src/zstr.hpp"
 
 
 void SkipMerMultiWayCoverageAnalyser::add_coverage_track(SkipMerSpectrum &skms,uint8_t maxcoverage) {
-    coverage_tracks.emplace_back(std::vector<uint8_t>(ref.refseqs.back().offset+ref.refseqs.back().size,0));
+    coverage_tracks.emplace_back(ref.refseqs.back().offset+ref.refseqs.back().size,0);
     auto current_pos=ref.skipmer_positions.begin();
     for (auto &c:skms.skipmers){
         while (current_pos<ref.skipmer_positions.end() and current_pos->skipmer < c.skipmer) ++current_pos;
@@ -155,10 +161,10 @@ std::vector<uint64_t> SkipMerMultiWayCoverageAnalyser::covered_by_all_stats(){
 
 std::vector<uint64_t> SkipMerMultiWayCoverageAnalyser::covered_by_all_projected_stats(){
     //Total Ref,Total Any,Total All,Feature Ref,Feature Any,Feature All
-    std::vector<bool> projected_ref(coverage_tracks[0].size());
-    std::vector<bool> projected_all(coverage_tracks[0].size());
-    std::vector<bool> projected_any(coverage_tracks[0].size());
-    std::vector<bool> in_feature(coverage_tracks[0].size());
+    std::vector<bool> projected_ref(coverage_tracks[0].size(),false);
+    std::vector<bool> projected_all(coverage_tracks[0].size(),false);
+    std::vector<bool> projected_any(coverage_tracks[0].size(),false);
+    std::vector<bool> in_feature(coverage_tracks[0].size(),false);
 
     for (auto &f:ref.reffeatures){
         for (uint64_t p=f.start;p<=f.end;++p) in_feature[p]=true;
@@ -166,30 +172,35 @@ std::vector<uint64_t> SkipMerMultiWayCoverageAnalyser::covered_by_all_projected_
 
     uint64_t total_ref=0,total_any=0,total_all=0,feature_ref=0,feature_any=0,feature_all=0;
     uint64_t xp,xcp,xt;
-    for (uint64_t p=0;p<coverage_tracks[0].size();++p) {
+
+    for (uint64_t p=0;p<coverage_tracks[0].size()-ref.S;++p) {
         if (coverage_tracks[0][p]>0) {
-            for (xp=p, xcp=0,xt=0;xt<ref.S;++xp,xcp=(xcp == ref.n-1 ? 0 : xcp+1),++xt)
-                if (!projected_ref[xp]){
+            for (xp=p, xcp=0,xt=0;xt<ref.S;++xp,xcp=(xcp == ref.n-1) ? 0 : xcp+1,++xt)
+                if (!projected_ref[xp] && xcp<ref.m){
                     ++total_ref;
                     if (in_feature[xp]) ++feature_ref;
                     projected_ref[xp]=true;
                 }
-            uint64_t sc=0;
+
+
+            uint64_t sc=0;//count of datasets that HAVE the current skip-mer
             for (auto si=1;si<coverage_tracks.size();++si) if (coverage_tracks[si][p]>0) ++sc;
             if (sc>0){
-                for (xp=p, xcp=0,xt=0;xt<ref.S;++xp,xcp=(xcp == ref.n-1 ? 0 : xcp+1),++xt)
-                    if (!projected_any[xp]){
+                for (xp=p, xcp=0,xt=0;xt<ref.S;++xp,xcp=(xcp == ref.n-1) ? 0 : xcp+1,++xt)
+                    if (!projected_any[xp] and xcp<ref.m){
                         ++total_any;
                         if (in_feature[p]) ++feature_any;
                         projected_any[xp]=true;
                     }
+
                 if (sc==coverage_tracks.size()-1)
-                    for (xp=p, xcp=0,xt=0;xt<ref.S;++xp,xcp=(xcp == ref.n-1 ? 0 : xcp+1),++xt)
-                        if (!projected_all[xp]){
+                    for (xp=p, xcp=0,xt=0;xt<ref.S;++xp,xcp=(xcp == ref.n-1) ? 0 : xcp+1,++xt)
+                        if (!projected_all[xp] and xcp<ref.m){
                             ++total_all;
                             if (in_feature[p]) ++feature_all;
                             projected_all[xp]=true;
                         };
+
             }
         }
     }
