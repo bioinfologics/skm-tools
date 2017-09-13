@@ -24,7 +24,7 @@ void SkipMerMultiWayCoverageAnalyser::add_coverage_track(SkipMerSpectrum &skms,u
             if (coverage_tracks[0][current_pos->position]>0) coverage_tracks.back()[current_pos->position]=(c.count<255 ? c.count:255);
     }
     for (auto &c:coverage_tracks.back()){
-        if (c>maxcoverage) c=0;
+        if (maxcoverage != 0 && c>maxcoverage) c=0;
     }
 }
 

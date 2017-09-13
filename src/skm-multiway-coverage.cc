@@ -61,7 +61,7 @@ int main(int argc, char * argv[]) {
     uint8_t k=21;
 
     uint64_t alloc_block=10000000,minfeature=1000;
-    uint8_t maxcoverage=1;
+    uint8_t maxrefcoverage=1,maxsetcoverage=1;
     bool fasta_input=true,stats_only=false;
 
     try
@@ -73,9 +73,10 @@ int main(int argc, char * argv[]) {
                 ("r,reference", "reference to map coverage to", cxxopts::value<std::string>(ref_filename))
                 ("gff3_file", "gff3 file for features on the first genome", cxxopts::value<std::string>(gff3_filename))
                 ("gff3_feature", "gff3 feature name to split classification", cxxopts::value<std::string>(gff3_feature))
-                ("gff3_min_size", "gff3 feature minimum size (default 1000)", cxxopts::value<uint64_t >(minfeature))
+                ("gff3_min_size", "gff3 feature minimum size (default 1000)", cxxopts::value<uint64_t>(minfeature))
                 ("c,coverage_set", "coverage set (use as many as needed)", cxxopts::value<std::vector<std::string>>(seq_filenames))
-                ("max_coverage", "max coverage (both on ref and sets - default 1)", cxxopts::value<uint8_t >(maxcoverage))
+                ("max_ref_coverage", "max coverage on reference (default 1)", cxxopts::value<uint8_t>(maxrefcoverage))
+                ("max_set_coverage", "max coverage on sets (default 1)", cxxopts::value<uint8_t>(maxsetcoverage))
                 ("o,output", "output file prefix", cxxopts::value<std::string>(output_prefix));
         options.add_options("Skip-mer shape (m every n, total k)")
                 ("m,used_bases", "m", cxxopts::value<uint8_t>(m))
@@ -201,7 +202,7 @@ int main(int argc, char * argv[]) {
     }
     std::ofstream prog_cov(output_prefix+"_cov_progression.csv");
     prog_cov<<"Shape,S,Set Count,Total Ref,Total Any,Total All,Feature Ref,Feature Any,Feature All,No Feature Ref,No Feature Any,No Feature All,PTotal Ref,PTotal Any,PTotal All,PFeature Ref,PFeature Any,PFeature All,PNo Feature Ref,PNo Feature Any,PNo Feature All"<<std::endl;
-    SkipMerMultiWayCoverageAnalyser mwca(ref,maxcoverage);
+    SkipMerMultiWayCoverageAnalyser mwca(ref,maxrefcoverage);
     for (auto ref_id=0;ref_id<refcount;++ref_id) {
         std::cout<<"Processing sequence file #"<<ref_id+1<<": "<<seq_filenames[ref_id]<<std::endl;
         SkipMerSpectrum skms(m,n,k,alloc_block);
@@ -210,7 +211,7 @@ int main(int argc, char * argv[]) {
         std::cout<<"Sorting and collapsing... "<<std::flush;
         skms.sort_and_collapse();
         std::cout<<"Adding coverage track... "<<std::flush;
-        mwca.add_coverage_track(skms,maxcoverage);
+        mwca.add_coverage_track(skms,maxsetcoverage);
         prog_cov<<(int) m<<"-"<<(int) n<<'-'<<(int) k<<","<<skms.S<<","<<set_names[ref_id];
         auto cs=mwca.covered_by_all_stats();
         for (auto covx:cs) prog_cov<<","<<covx;
