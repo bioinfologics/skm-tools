@@ -3,4 +3,4 @@
 	url = https://github.com/jarro2783/cxxopts.git
 [submodule "src/deps/zstr"]
 	path = src/deps/zstr
-	url = https://github.com/mateidavid/zstr.git
+	url = https://github.com/bioinfologics/zstr.git
