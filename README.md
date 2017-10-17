@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/bioinfologics/skm-tools.svg?branch=master)](https://travis-ci.org/bioinfologics/skm-tools.svg?branch=master)
+
 # Working with skip-mers
 
 This repository contains a number of tools that work with skip-mers.
