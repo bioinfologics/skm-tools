@@ -79,7 +79,20 @@ add_executable(skm-multiway-coverage
                src/SkipMerMultiWayCoverageAnalyser.cc
                src/SkipMerMultiWayCoverageAnalyser.h)
 
+add_executable(skm-align
+        src/skm-align.cc
+        src/SkipMer.cc
+        src/SkipMer.h
+        src/SkipMerPosition.cc
+        src/SkipMerPosition.h
+        src/SkipMerSpectrum.cc
+        src/SkipMerSpectrum.h
+        src/SkipMerMultiWayCoverageAnalyser.cc
+        src/SkipMerMultiWayCoverageAnalyser.h)
+
+
 ##add_executable(kmatch-dump src/matchdump.cc)
 
 target_link_libraries (skm-count ${CMAKE_THREAD_LIBS_INIT} ${ZLIB_LIBRARIES} ${BZIP2_LIBRARIES})
 target_link_libraries (skm-multiway-coverage ${CMAKE_THREAD_LIBS_INIT} ${ZLIB_LIBRARIES} ${BZIP2_LIBRARIES})
+target_link_libraries (skm-align ${CMAKE_THREAD_LIBS_INIT} ${ZLIB_LIBRARIES} ${BZIP2_LIBRARIES})
